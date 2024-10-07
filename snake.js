@@ -6,32 +6,32 @@ let dx = grid;
 let dy = 0;
 let apple = {x: 320, y: 320};
 let score = 0;
-let speed = 15;  
+let speed = 15;  // Устанавливаем скорость змейки
 
 function gameLoop() {
     setTimeout(function () {
         requestAnimationFrame(gameLoop);
 
-        if (++score < speed) return;  
+        if (++score < speed) return;  // Задержка, чем выше значение speed, тем медленнее
         score = 0;
 
-        
+        // Перемещение змейки
         const head = {x: snake[0].x + dx, y: snake[0].y + dy};
         snake.unshift(head);
         if (head.x === apple.x && head.y === apple.y) {
-            
+            // Если съели яблоко, генерируем новое
             apple.x = Math.floor(Math.random() * 20) * grid;
             apple.y = Math.floor(Math.random() * 20) * grid;
         } else {
             snake.pop();
         }
 
-        
+        // Проверка выхода за границы
         if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
             resetGame();
         }
 
-        
+        // Проверка столкновения с собой
         for (let i = 4; i < snake.length; i++) {
             if (snake[i].x === head.x && snake[i].y === head.y) {
                 resetGame();
@@ -40,26 +40,26 @@ function gameLoop() {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        
-        ctx.fillStyle = '#bada55'; 
+        // Рисуем клетчатый фон
+        ctx.fillStyle = '#bada55'; // Основной цвет фона
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = '#9acd32';
         for (let x = 0; x < canvas.width; x += grid) {
-            for (let y = 0; y < canvas.height; y += grid) {
+            for (let y = 0; x < canvas.height; y += grid) {
                 ctx.strokeRect(x, y, grid, grid);
             }
         }
 
-        
+        // Рисуем змейку
         snake.forEach(part => {
-            ctx.fillStyle = 'blue';  
+            ctx.fillStyle = 'blue';  // Цвет змейки
             ctx.fillRect(part.x, part.y, grid, grid);
         });
 
-        
+        // Рисуем яблоко
         ctx.fillStyle = 'red';
         ctx.fillRect(apple.x, apple.y, grid, grid);
-    }, 100);  
+    }, 150);  // Чем больше значение, тем медленнее змейка
 }
 
 function resetGame() {
