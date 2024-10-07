@@ -5,8 +5,8 @@ let snake = [{x: 160, y: 160}];
 let dx = grid;
 let dy = 0;
 let apple = {x: 320, y: 320};
+let speed = 10;  // Устанавливаем скорость змейки
 let score = 0;
-let speed = 15;  // Устанавливаем скорость змейки
 
 function gameLoop() {
     setTimeout(function () {
@@ -18,8 +18,9 @@ function gameLoop() {
         // Перемещение змейки
         const head = {x: snake[0].x + dx, y: snake[0].y + dy};
         snake.unshift(head);
+
+        // Если съели яблоко
         if (head.x === apple.x && head.y === apple.y) {
-            // Если съели яблоко, генерируем новое
             apple.x = Math.floor(Math.random() * 20) * grid;
             apple.y = Math.floor(Math.random() * 20) * grid;
         } else {
@@ -38,6 +39,7 @@ function gameLoop() {
             }
         }
 
+        // Очищаем холст
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Рисуем клетчатый фон
@@ -45,7 +47,7 @@ function gameLoop() {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = '#9acd32';
         for (let x = 0; x < canvas.width; x += grid) {
-            for (let y = 0; x < canvas.height; y += grid) {
+            for (let y = 0; y < canvas.height; y += grid) {
                 ctx.strokeRect(x, y, grid, grid);
             }
         }
@@ -59,7 +61,7 @@ function gameLoop() {
         // Рисуем яблоко
         ctx.fillStyle = 'red';
         ctx.fillRect(apple.x, apple.y, grid, grid);
-    }, 150);  // Чем больше значение, тем медленнее змейка
+    }, 100);  // Замедляем на 100 мс для плавного движения
 }
 
 function resetGame() {
